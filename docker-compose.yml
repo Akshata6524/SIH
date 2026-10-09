@@ -1,0 +1,39 @@
+services:
+  api:
+    image: ulpf:offline
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./configs:/app/configs
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  dashboard:
+    image: ulpf:offline
+    command:
+      - streamlit
+      - run
+      - dashboard/app.py
+      - --server.port
+      - "8501"
+      - --server.address
+      - 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      ULPF_API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy

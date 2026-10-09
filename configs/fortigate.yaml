@@ -1,0 +1,29 @@
+name: fortigate
+vendor: Fortinet
+product: FortiGate
+format: syslog-kv
+detect:
+  contains: "devname="
+mapping:
+  srcip: src.ip
+  srcport: src.port
+  dstip: dst.ip
+  dstport: dst.port
+  proto: protocol
+  action: action
+  policyid: rule.id
+  sentbyte: bytes.out
+  rcvdbyte: bytes.in
+value_maps:
+  action:
+    deny: block
+    denied: block
+    blocked: block
+    accept: allow
+    allowed: allow
+    close: allow
+category: network_activity
+timestamp:
+  fields: [date, time]
+  format: "%Y-%m-%d %H:%M:%S"
+  tz: UTC

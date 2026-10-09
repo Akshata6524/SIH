@@ -1,0 +1,20 @@
+name: cisco_asa
+vendor: Cisco
+product: ASA
+format: syslog-kv
+detect:
+  contains: "device=ASA-5516"
+mapping:
+  src_ip: src.ip
+  src_port: src.port
+  dst_ip: dst.ip
+  dst_port: dst.port
+  protocol: protocol
+  action: action
+  rule_id: rule.id
+  bytes_out: bytes.out
+category: network_activity
+timestamp:
+  fields: [date, time]
+  format: "%Y-%m-%d %H:%M:%S"
+  tz: UTC

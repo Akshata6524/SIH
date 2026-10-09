@@ -1,0 +1,22 @@
+name: squid
+vendor: Squid
+product: Proxy
+format: regex
+detect:
+  regex: '^20\d\d-\d\d-\d\dT.* (?:TCP_DENIED|TCP_MISS|TCP_TUNNEL)/\d{3} '
+pattern: '^(?P<timestamp>\S+) (?P<client_ip>\S+) (?P<result>\S+) (?P<bytes>\d+) (?P<method>\S+) (?P<url>\S+) (?P<user>\S+)$'
+mapping:
+  client_ip: src.ip
+  result: action
+  bytes: bytes.out
+  user: user
+value_maps:
+  result:
+    TCP_DENIED/403: block
+    TCP_MISS/200: allow
+    TCP_TUNNEL/200: allow
+category: web_activity
+timestamp:
+  fields: [timestamp]
+  format: "%Y-%m-%dT%H:%M:%SZ"
+  tz: UTC

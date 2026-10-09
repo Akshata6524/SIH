@@ -1,0 +1,24 @@
+name: suricata
+vendor: Open Information Security Foundation
+product: Suricata
+format: json
+detect:
+  contains: '"sensor_id":"SURI-01"'
+mapping:
+  src_ip: src.ip
+  src_port: src.port
+  dest_ip: dst.ip
+  dest_port: dst.port
+  proto: protocol
+  action: action
+  alert.signature: rule.name
+  alert.severity: severity
+value_maps:
+  action:
+    blocked: block
+    allowed: allow
+category: threat_detection
+timestamp:
+  fields: [timestamp]
+  format: "%Y-%m-%dT%H:%M:%S.%f%z"
+  tz: UTC

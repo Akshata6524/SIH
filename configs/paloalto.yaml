@@ -1,0 +1,37 @@
+name: paloalto
+vendor: Palo Alto Networks
+product: PA-Series
+format: csv
+detect:
+  regex: "^PA-440,"
+columns:
+  - device
+  - receive_time
+  - src
+  - dst
+  - sport
+  - dport
+  - proto
+  - action
+  - rule
+  - user
+  - bytes_sent
+mapping:
+  src: src.ip
+  dst: dst.ip
+  sport: src.port
+  dport: dst.port
+  proto: protocol
+  action: action
+  rule: rule.name
+  user: user
+  bytes_sent: bytes.out
+value_maps:
+  action:
+    deny: block
+    allow: allow
+category: network_activity
+timestamp:
+  fields: [receive_time]
+  format: "%Y/%m/%d %H:%M:%S"
+  tz: UTC

@@ -1,0 +1,23 @@
+name: acmefw
+vendor: Acme
+product: AcmeFW
+format: syslog-kv
+detect:
+  contains: "device=AcmeFW"
+mapping:
+  client_ip: src.ip
+  sport: src.port
+  server_ip: dst.ip
+  dport: dst.port
+  verdict: action
+  user: user
+value_maps:
+  verdict:
+    allowed: allow
+    denied: block
+category: network_activity
+timestamp:
+  fields:
+  - ts
+  format: '%Y-%m-%dT%H:%M:%S'
+  tz: UTC
